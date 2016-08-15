@@ -3,8 +3,9 @@ var _path = require('path');
 var BufferList = require('bl');
 var fs = require('fs');
 var stat = require('./stat');
+var posix = require('./posix');
 
-var root = '/media/kanatzidis/Backup/.HFS+ Private Directory Data\r';
+var dataRoot = '/media/kanatzidis/Backup/.HFS+ Private Directory Data\r';
 var backupRoot = '/media/kanatzidis/Backup/Backups.backupdb';
 
 var virtualDirs = {};
@@ -34,34 +35,17 @@ var syscalls = {
           return cb(err.errno);
         }
       } else {
-        return cb(0, stat(s));
+        console.log(s);
+        if(!s.size && s.nlink > 1) {
+          fs.stat(_path.join(dataRoot, `dir_${s.nlink}`, _path.basename(path)), function(err, s) {
+            if(err) return cb(posix.EIO);
+            cb(0, stat(s));
+          });
+        } else {
+          return cb(0, stat(s));
+        }
       }
 
-    if(path === '/') {
-      return cb(0, {
-        mtime: new Date(),
-        atime: new Date(),
-        ctime: new Date(),
-        size: 4096,
-        mode: 16877,
-        uid: process.getuid(),
-        gid: process.getgid()
-      });
-    } else {
-      if(ids[path]) {
-        cb(0, {
-          mtime: contents[path]?new Date():undefined,
-          atime: contents[path]?new Date():undefined,
-          ctime: new Date(),
-          size: contents[path]?contents[path].length:0,
-          mode: 33188,
-          uid: process.getuid(),
-          gid: process.getgid()
-        });
-      } else {
-        return cb(fuse.ENOENT);
-      }
-    }
     });
   },
   release: function(path, fd, cb) {
