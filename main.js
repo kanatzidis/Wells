@@ -10,7 +10,9 @@ var trayMenu = Menu.buildFromTemplate([
   { label: 'Select A Drive', type: 'normal', click: selectDrive }
 ]);
 
-function selectDrive(menuItem, browserWindow, event) {
+var mounted = false;
+
+function selectDrive() {
   var drive = dialog.showOpenDialog({ properties: ['openDirectory'] });
   if(drive) {
     drive = drive[0];
@@ -27,7 +29,10 @@ function selectDrive(menuItem, browserWindow, event) {
           { label: `Unmount ${path.basename(drive)}`, type: 'normal', click: unmountDrive }
         ]);
         mb.tray.setContextMenu(trayMenu);
-        fuse.mount();
+        fuse.mount(drive, function(err) {
+          if(err) throw err;
+          mounted = true;
+        });
      }
     });
   }
@@ -38,8 +43,18 @@ function unmountDrive() {
     { label: 'Select A Drive', type: 'normal', click: selectDrive }
   ]);
   mb.tray.setContextMenu(trayMenu);
-  fuse.unmount();
+  fuse.unmount(function(err) {
+    if(err) throw err;
+    mounted = false;
+  });
 }
+
+mb.app.on('before-quit', function() {
+  if(!mounted) return;
+  fuse.unmount(function(err) {
+    if(err) throw err;
+  });
+});
 
 mb.on('ready', function() {
   console.log('app is ready');
