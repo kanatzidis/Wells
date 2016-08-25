@@ -51,10 +51,23 @@ ipc.connectTo(
                   });
                   break;
                 case 'close':
+                  fs.close(data.fd, function(err) {
+                    if(err) return ipc.of.world.emit(data.id, { err: true, errno: err.errno });
+                    ipc.of.world.emit(data.id, {});
+                  });
                   break;
                 case 'open':
+                  fs.open(path, 'r', function(err, fd) {
+                    if(err) return ipc.of.world.emit(data.id, { err: true, errno: err.errno });
+                    ipc.of.world.emit(data.id, { fd });
+                  });
                   break;
                 case 'read':
+                  var buf = new Buffer(data.len);
+                  fs.read(data.fd, buf, 0, data.len, data.pos, function(err, bytesRead, data) {
+                    if(err) return ipc.of.world.emit(data.id, { err: true, errno: err.errno });
+                    ipc.of.world.emit(data.id, { data, bytesRead });
+                  });
                   break;
               }
             }
