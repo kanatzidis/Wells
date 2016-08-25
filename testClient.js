@@ -64,9 +64,9 @@ ipc.connectTo(
                   break;
                 case 'read':
                   var buf = new Buffer(data.len);
-                  fs.read(data.fd, buf, 0, data.len, data.pos, function(err, bytesRead, data) {
+                  fs.read(data.fd, buf, 0, data.len, data.pos, function(err, bytesRead, buffer) {
                     if(err) return ipc.of.world.emit(data.id, { err: true, errno: err.errno });
-                    ipc.of.world.emit(data.id, { data, bytesRead });
+                    ipc.of.world.emit(data.id, { data: buffer, bytesRead });
                   });
                   break;
               }
