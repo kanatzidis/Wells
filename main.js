@@ -18,13 +18,6 @@ if(args['--'].length) {
   //ipc.config.encoding = 'hex';
 
   ipc.serve(function() {
-    ipc.server.on('connect', function(socket) {
-      ipc.server.emit(socket, 'cmd', { id: 'blah', cmd: 'stat', path: '/media/kanatzidis/Backup/Backups.backupdb/Madrigal/Latest/Macintosh HD/Users/kanatzidis/Pictures' });
-    });
-
-    ipc.server.on('response', function(data, socket) {
-      console.log('got', data);
-    });
 
       var menubar = require('menubar');
       var { Menu, dialog } = require('electron');

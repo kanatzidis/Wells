@@ -26,27 +26,29 @@ ipc.connectTo(
             function(data){
                 ipc.log('got a message from world : ', data);
                 var path = data.path;
+                  Object.keys(virtualDirs).forEach(function(dir) {
+                    if(path.includes(dir)) path = path.replace(dir, p.join(base, virtualDirs[dir]));
+                  });
               switch(data.cmd) {
                 case 'stat':
-                  Object.keys(virtualDirs).forEach(function(dir) {
-                    if(path.includes(dir)) path.replace(dir, p.join(base, virtualDirs[dir]));
-                  });
                   fs.stat(path, function(err, stat) {
-                    if(err) throw err;
-                    if(!stat.size && stat.nlink) {
+                    if(err) return ipc.of.world.emit(data.id, { err: true, errno: err.errno });
+                    if(!stat.size && stat.nlink > 1) {
                       virtualDirs[path] = `dir_${stat.nlink}`;
                       path = p.join(base, virtualDirs[path]);
                       return fs.stat(path, function(err, stat) {
-                        if(err) throw err;
-                        stat.path = path;
-                        console.log(stat);
-                        ipc.of.world.emit('response', stat);
+                        if(err) return ipc.of.world.emit(data.id, { err: true, errno: err.errno });
+                        ipc.of.world.emit(data.id, stat);
                       });
                     }
-                    ipc.of.world.emit('response', stat);
+                    ipc.of.world.emit(data.id, stat);
                   });
                   break;
                 case 'readdir':
+                  fs.readdir(path, function(err, dirs) {
+                    if(err) return ipc.of.world.emit(data.id, { err: true, errno: err.errno });
+                    ipc.of.world.emit(data.id, dirs);
+                  });
                   break;
                 case 'close':
                   break;
