@@ -11,7 +11,7 @@ if(args['--'].length) {
   var a = args['--'];
   
   console.log(a);
-  require('./testClient')(a[0]);
+  require('./lib/fs')(a[0]);
 } else {
 
   ipc.config.id = 'world';
