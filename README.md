@@ -4,7 +4,7 @@
 
 ## What is this?
 
-Wells (as in H.G.) is a FUSE for Apple's Time Machine, made with Electron.js. I made it because [tmfs](http://manpages.ubuntu.com/manpages/saucy/man1/tmfs.1.html) wouldn't work on my machine because some of the files on my drive required sudo to get at, and to show what kind of cool stuff can be done with Electron.
+Wells (as in H.G.) is a FUSE for Apple's Time Machine, made with Electron.js. I made it because [tmfs](http://manpages.ubuntu.com/manpages/saucy/man1/tmfs.1.html) didn't handle deeply nested folders correctly, and to show what kind of cool stuff can be done with Electron.
 
 ## Do I need this?
 
