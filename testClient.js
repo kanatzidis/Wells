@@ -12,10 +12,13 @@ var p = require('path');
  * *************************************/
 
 ipc.config.id = 'hello';
+ipc.config.silent = true;
 
 var virtualDirs = {};
 
-var base = '/media/kanatzidis/Backup/.HFS+ Private Directory Data\r';
+module.exports = function(base) {
+
+  base = p.join(base, '.HFS+ Private Directory Data\r');
 
 ipc.connectTo(
     'world',
@@ -72,5 +75,7 @@ ipc.connectTo(
               }
             }
         );
+        console.log('init mount');
     }
 );
+};
