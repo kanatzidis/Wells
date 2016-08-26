@@ -75,6 +75,10 @@ ipc.connectTo(
               }
             }
         );
+
+        ipc.of.world.on('kill', function() {
+          process.exit(0);
+        });
         console.log('init mount');
     }
 );

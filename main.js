@@ -52,7 +52,7 @@ if(args['--'].length) {
                 }
               } else {
                 var trayMenu = Menu.buildFromTemplate([
-                  { label: `Unmount ${path.basename(drive)}`, type: 'normal', click: unmountDrive }
+                  { label: `Unmount ${path.basename(drive)}`, type: 'normal', click: closeClient }
                 ]);
                 mb.tray.setContextMenu(trayMenu);
 
@@ -93,20 +93,24 @@ if(args['--'].length) {
         }
         
         function unmountDrive() {
-          exec && exec.kill();
           fuse.unmount(function(err) {
             if(err) throw err;
             mb.tray.setContextMenu(unmountedTrayMenu);
             mounted = false;
           });
         }
+
+        function closeClient() {
+          ipc.server.broadcast('kill');
+        }
         
         mb.app.on('before-quit', function() {
           if(!mounted) return;
-          exec && exec.kill();
-          fuse.unmount(function(err) {
-            if(err) throw err;
-          });
+          ipc.server.broadcast('kill');
+          //exec && exec.kill();
+          //fuse.unmount(function(err) {
+          //  if(err) throw err;
+          //});
         });
         
         mb.on('ready', function() {
