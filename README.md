@@ -15,9 +15,17 @@ If you don't use linux, no. Mac reads it natively (obviously) and Windows can't 
 I'm working on a nicely packaged version of this but for now you can run the electron app manually:
 
 ```
+# If not already installed
+# (this is for ubuntu/debian, replace with your own distro's package/command as appropriate)
+sudo apt-get install libfuse-dev
+
 # From inside the app repo
 mkdir mnt # need this so the FUSE actually has a place to mount
 npm install
+
+# Rebuild native modules
+./node_modules/.bin/electron-rebuild -`./node_modules/.bin/electron -v`
+
 npm start
 ```
 
