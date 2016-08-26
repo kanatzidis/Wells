@@ -6,6 +6,7 @@ var { spawn } = require('child_process');
 
 var args = min(process.argv, { '--': true });
 
+if(process.platform !== 'linux') throw new Error('You only need to use this on linux!');
 
 if(args['--'].length) {
   var a = args['--'];
