@@ -108,9 +108,9 @@ if(args['--'].length) {
           if(!mounted) return;
           ipc.server.broadcast('kill');
           //exec && exec.kill();
-          //fuse.unmount(function(err) {
-          //  if(err) throw err;
-          //});
+          fuse.unmount(function(err) {
+            if(err) throw err;
+          });
         });
         
         mb.on('ready', function() {
