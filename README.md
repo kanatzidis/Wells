@@ -20,7 +20,6 @@ I'm working on a nicely packaged version of this but for now you can run the ele
 sudo apt-get install libfuse-dev
 
 # From inside the app repo
-mkdir mnt # need this so the FUSE actually has a place to mount
 npm install
 
 # Rebuild native modules

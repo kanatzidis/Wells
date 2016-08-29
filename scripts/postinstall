@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+if ! [ -d mnt ]; then
+  mkdir mnt
+fi
