@@ -60,7 +60,7 @@ if(args['--'].length) {
                 if(/node_modules/.test(process.argv[0])) {
                   process.argv[1] = path.resolve(process.argv[1]);
                 }
-                var cmd = `env DISPLAY=${process.env.DISPLAY} XAUTHORITY=${process.env.XAUTHORITY} ${process.argv.join(' ')} ${drive}`;
+                var cmd = `env DISPLAY=${process.env.DISPLAY} XAUTHORITY=${process.env.XAUTHORITY} ${process.argv.join(' ')} -- ${drive}`;
                 console.log(cmd.split(' '));
                 exec = spawn('pkexec', cmd.split(' '), { env: process.env });
                 exec.on('close', function(code) {

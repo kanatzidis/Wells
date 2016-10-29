@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron main.js --",
+    "start": "electron main.js",
     "postinstall": "./scripts/postinstall"
   },
   "repository": {
@@ -19,7 +19,9 @@
     "machine",
     "linux"
   ],
-  "author": "Gregori Kanatzidis",
+  "author": {
+    "email": "gregori@alabastertech.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kanatzidis/Wells/issues"
