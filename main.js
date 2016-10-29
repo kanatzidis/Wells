@@ -1,7 +1,10 @@
 var fs = require('fs');
+var os = require('os');
 var path = require('path');
 var min = require('minimist');
 var ipc = require('node-ipc');
+var mkdirp = require('mkdirp');
+var uuid = require('node-uuid');
 var { spawn } = require('child_process');
 
 var args = min(process.argv, { '--': true });
@@ -24,8 +27,9 @@ if(args['--'].length) {
   ipc.serve(function() {
 
     var exec;
+    var mountpoint = path.join(os.tmpdir(), uuid.v4());
 
-    init();
+      init();
       function init() {
         var menubar = require('menubar');
         var { Menu, dialog } = require('electron');
@@ -82,7 +86,7 @@ if(args['--'].length) {
                   data = data.toString();
                   console.log(data);
                   if(data === 'init mount\n') {
-                    fuse.mount(drive, ipc, function(err) {
+                    fuse.mount(drive, ipc, mountpoint, function(err) {
                       if(err) throw err;
                       mounted = true;
                     });
@@ -116,7 +120,13 @@ if(args['--'].length) {
         
         mb.on('ready', function() {
           console.log('app is ready');
-          mb.tray.setContextMenu(unmountedTrayMenu);
+
+          mkdirp(mountpoint, function(err) {
+            if(err) throw err;
+
+            console.log('mountpoint created');
+            mb.tray.setContextMenu(unmountedTrayMenu);
+          });
         });
       }
 
