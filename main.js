@@ -4,7 +4,6 @@ var path = require('path');
 var min = require('minimist');
 var ipc = require('node-ipc');
 var mkdirp = require('mkdirp');
-var uuid = require('node-uuid');
 var { spawn } = require('child_process');
 
 var args = min(process.argv, { '--': true });
@@ -27,7 +26,7 @@ if(args['--'].length) {
   ipc.serve(function() {
 
     var exec;
-    var mountpoint = path.join(os.tmpdir(), uuid.v4());
+    var mountpoint = path.join(os.homedir(), 'Wells');
 
       init();
       function init() {
@@ -121,6 +120,16 @@ if(args['--'].length) {
         mb.on('ready', function() {
           console.log('app is ready');
 
+          var mnt;
+          try {
+            mnt = fs.statSync(mountpoint);
+          } catch(e) {}
+
+          if(mnt && fs.readdirSync(mountpoint).length) {
+            // TODO: pop dialog box
+            console.log(mountpoint + ' already exists.');
+            return mb.app.quit();
+          }
           mkdirp(mountpoint, function(err) {
             if(err) throw err;
 
