@@ -37,7 +37,8 @@ if(args['--'].length) {
         var mb = menubar();
         console.log(process.argv);
         var unmountedTrayMenu = Menu.buildFromTemplate([
-          { label: 'Select A Drive', type: 'normal', click: selectDrive }
+          { label: 'Select A Drive', type: 'normal', click: selectDrive },
+          { label: 'Quit', type: 'normal', click: quitAppMenu }
         ]);
         
         var mounted = false;
@@ -56,7 +57,8 @@ if(args['--'].length) {
                 }
               } else {
                 var trayMenu = Menu.buildFromTemplate([
-                  { label: `Unmount ${path.basename(drive)}`, type: 'normal', click: closeClient }
+                  { label: `Unmount ${path.basename(drive)}`, type: 'normal', click: closeClient },
+                  { label: 'Quit', type: 'normal', click: quitAppMenu }
                 ]);
                 mb.tray.setContextMenu(trayMenu);
 
@@ -107,15 +109,24 @@ if(args['--'].length) {
         function closeClient() {
           ipc.server.broadcast('kill');
         }
-        
+
+        function quitAppMenu() {
+          quitApp(() => mb.app.quit());
+        }
+
         mb.app.on('before-quit', function() {
-          if(!mounted) return;
+          quitApp();
+        });
+
+        function quitApp(cb) {
+          if(!mounted) return cb && cb();
           ipc.server.broadcast('kill');
           //exec && exec.kill();
           fuse.unmount(function(err) {
             if(err) throw err;
+            cb && cb();
           });
-        });
+        }
         
         mb.on('ready', function() {
           console.log('app is ready');
