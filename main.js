@@ -18,10 +18,7 @@ if(args['--'].length) {
 } else {
 
   ipc.config.id = 'world';
-  ipc.config.silent = process.env.NODE_ENV !== 'development';
-  //ipc.config.retry = 1500;
-  //ipc.config.rawBuffer = true;
-  //ipc.config.encoding = 'hex';
+  //ipc.config.silent = process.env.NODE_ENV !== 'development';
 
   ipc.serve(function() {
 
@@ -35,7 +32,7 @@ if(args['--'].length) {
         var fuse = require('./lib/fuse');
           
         var mb = menubar();
-        console.log(process.argv);
+        //console.log(process.argv);
         var unmountedTrayMenu = Menu.buildFromTemplate([
           { label: 'Select A Drive', type: 'normal', click: selectDrive },
           { label: 'Quit', type: 'normal', click: quitAppMenu }
@@ -50,12 +47,13 @@ if(args['--'].length) {
             fs.stat(path.join(drive, '.HFS+ Private Directory Data\r'), function(err, stat) {
               if(err) {
                 if(err.code === 'ENOENT') {
-                  console.log(err);
+                  //console.log(err);
                   dialog.showErrorBox('Invalid drive selected', 'This is not a Time Machine backup drive. Please select a valid drive.');
                 } else {
                   dialog.showErrorBox('There was a problem', err.message);
                 }
               } else {
+                if(checkMountpoint()) return;
                 var trayMenu = Menu.buildFromTemplate([
                   { label: `Unmount ${path.basename(drive)}`, type: 'normal', click: closeClient },
                   { label: 'Quit', type: 'normal', click: quitAppMenu }
@@ -66,10 +64,10 @@ if(args['--'].length) {
                   process.argv[1] = path.resolve(process.argv[1]);
                 }
                 var cmd = `env DISPLAY=${process.env.DISPLAY} XAUTHORITY=${process.env.XAUTHORITY} ${process.argv.join(' ')} -- ${drive}`;
-                console.log(cmd.split(' '));
+                //console.log(cmd.split(' '));
                 exec = spawn('pkexec', cmd.split(' '), { env: process.env });
                 exec.on('close', function(code) {
-                  console.log('closed', code);
+                  //console.log('closed', code);
                   exec = null;
                   unmountDrive();
                 });
@@ -85,7 +83,7 @@ if(args['--'].length) {
 
                 exec.stdout.on('data', function(data) {
                   data = data.toString();
-                  console.log(data);
+                  //console.log(data);
                   if(data === 'init mount\n') {
                     fuse.mount(drive, ipc, mountpoint, function(err) {
                       if(err) throw err;
@@ -128,9 +126,7 @@ if(args['--'].length) {
           });
         }
         
-        mb.on('ready', function() {
-          console.log('app is ready');
-
+        function checkMountpoint() {
           var mnt;
           try {
             mnt = fs.statSync(mountpoint);
@@ -138,13 +134,20 @@ if(args['--'].length) {
 
           if(mnt && fs.readdirSync(mountpoint).length) {
             // TODO: pop dialog box
-            console.log(mountpoint + ' already exists.');
-            return mb.app.quit();
+            dialog.showErrorBox('Mount Error:', mountpoint + ' already exists and is not empty.');
+            mb.app.quit();
+            return true;
           }
+        }
+
+        mb.on('ready', function() {
+          //console.log('app is ready');
+
+          checkMountpoint();
           mkdirp(mountpoint, function(err) {
             if(err) throw err;
 
-            console.log('mountpoint created');
+            //console.log('mountpoint created');
             mb.tray.setContextMenu(unmountedTrayMenu);
           });
         });
