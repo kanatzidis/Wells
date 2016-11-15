@@ -12,7 +12,7 @@ If you don't use linux, no. Mac reads it natively (obviously) and Windows can't 
 
 ## How to use
 
-[Download the latest version as a .deb package here.](https://geiger.alabastertechnologies.com/applications/MCuf4OSTJJ/wells).
+[Download the latest version as a .deb package here](https://geiger.alabastertechnologies.com/applications/MCuf4OSTJJ/wells).
 
 If you want to run the electron app manually:
 
