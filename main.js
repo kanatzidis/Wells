@@ -18,7 +18,7 @@ if(args['--'].length) {
 } else {
 
   ipc.config.id = 'world';
-  //ipc.config.silent = process.env.NODE_ENV !== 'development';
+  ipc.config.silent = true; //process.env.NODE_ENV !== 'development';
 
   ipc.serve(function() {
 
