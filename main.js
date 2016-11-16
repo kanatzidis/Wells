@@ -5,6 +5,7 @@ var min = require('minimist');
 var ipc = require('node-ipc');
 var mkdirp = require('mkdirp');
 var { spawn } = require('child_process');
+var { checkForUpdates } = require('geiger-autoupdate');
 
 var args = min(process.argv, { '--': true });
 
@@ -149,6 +150,7 @@ if(args['--'].length) {
 
             //console.log('mountpoint created');
             mb.tray.setContextMenu(unmountedTrayMenu);
+            checkForUpdates();      
           });
         });
       }

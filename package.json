@@ -1,6 +1,6 @@
 {
   "name": "wells",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A FUSE for Apple's Time Machine",
   "main": "main.js",
   "scripts": {
@@ -28,6 +28,7 @@
   "homepage": "https://github.com/kanatzidis/Wells#readme",
   "dependencies": {
     "fuse-bindings": "^2.9.0",
+    "geiger-autoupdate": "^0.1.0",
     "menubar": "^5.1.0",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
