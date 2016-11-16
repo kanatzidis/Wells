@@ -12,7 +12,9 @@ If you don't use linux, no. Mac reads it natively (obviously) and Windows can't 
 
 ## How to use
 
-I'm working on a nicely packaged version of this but for now you can run the electron app manually:
+[Download the latest version as a .deb package here](https://geiger.alabastertechnologies.com/applications/MCuf4OSTJJ/wells).
+
+If you want to run the electron app manually:
 
 ```
 # If not already installed
@@ -27,10 +29,6 @@ npm install
 
 npm start
 ```
-
-## Bad code
-
-This thing is still prototype status so GTFO with your criticisms ayye. Functionally it seems to all be there though. Let me know of any bugs.
 
 ## License
 
