@@ -14,7 +14,11 @@ If you don't use linux, no. Mac reads it natively (obviously) and Windows can't 
 
 [Download the latest version as a .deb package here](https://geiger.alabastertechnologies.com/applications/MCuf4OSTJJ/wells).
 
-If you want to run the electron app manually:
+Then find it in your start menu or run `wells` from the command line.
+
+
+
+#### If you want to run the electron app manually:
 
 ```
 # If not already installed
