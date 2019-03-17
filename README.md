@@ -12,7 +12,7 @@ If you don't use linux, no. Mac reads it natively (obviously) and Windows can't 
 
 ## How to use
 
-[Download the latest version as a .deb package here](https://geiger.alabastertech.com/applications/MCuf4OSTJJ/wells).
+[Download the latest version as a .deb package here](https://github.com/kanatzidis/Wells/releases).
 
 Then find it in your start menu or run `wells` from the command line.
 
