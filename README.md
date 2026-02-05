@@ -1,3 +1,5 @@
+> **Archived:** This project is no longer maintained. I no longer use Linux as a daily driver, so I have no use case for this tool. Note that Apple has defaulted to APFS for Time Machine since macOS Big Sur (2020) — whether Wells would work with APFS-based backups is unknown.
+
 # Wells
 
 ![Wells Screenshot](/docs/anim.gif?raw=true "Wells Screenshot")
